@@ -1,0 +1,26 @@
+replicaCount: 1
+port: 5432
+
+storage:
+  size: 1Gi
+  path: "/data/db"
+
+configmap:
+  name: db-secret-credentials
+  db:
+    name: music-server
+    user: test
+    password: test
+
+metadata:
+  configmap:
+    name: db-secret-credentials
+  volume:
+    name: postgresdb-persistent-volume
+  claim:
+    name: db-persistent-volume-claim
+  mount:
+    name: db-data
+
+labels:
+  app: postgresdb

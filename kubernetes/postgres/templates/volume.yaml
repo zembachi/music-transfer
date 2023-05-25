@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.metadata.volume.name }}
+  labels:
+    type: local
+    app: {{ .Values.labels.app }}
+spec:
+  storageClassName: manual
+  capacity:
+    storage: {{ .Values.storage.size }}
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: {{ .Values.storage.path }}

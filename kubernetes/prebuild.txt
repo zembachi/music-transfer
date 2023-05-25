@@ -1,0 +1,15 @@
+1) установить локальный регистр командой
+docker run -d -p 5000:5000 --restart=always --name music-tranfer-registry registry:2
+2) добавить в /etc/network команду, чтобы при перезагрузке компа поднимался статический ип
+sudo ifconfig lo:0 12.1.1.1
+3) добавить в /etc/hosts запись о внешнем порте
+12.1.1.1 registry.cluster.local
+4) поднимать миникуб командой (если уже был поднят, УДАЛИТЬ через minikube delete)
+minikube start --insecure-registry registry.cluster.local:5000
+5) после поднятия добавить запись в /etc/hosts миникуба запись об DNS (каждый раз при запуске миникуба)
+minikube ssh "echo \"12.1.1.1       registry.cluster.local\" | sudo tee -a  /etc/hosts"
+
+адрес 12.1.1.1 - для примера, можно выбрать любой
+
+minikube addons enable ingress
+https://gist.github.com/trisberg/37c97b6cc53def9a3e38be6143786589

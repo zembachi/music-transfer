@@ -1,0 +1,13 @@
+pluginManagement {
+
+    plugins {
+        id 'org.springframework.boot' version "${getProperty('org.springframework.boot.version')}"
+        id 'io.spring.dependency-management' version "${getProperty('io.spring.dependency-management.version')}"
+    }
+}
+
+rootProject.name = 'music-transfer'
+include 'config-server'
+//include 'external-service-manager'
+//include 'common'
+

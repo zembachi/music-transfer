@@ -1,0 +1,9 @@
+// устанавливаем для всех дочерних проектов название jar - '${project.name}.jar'
+childProjects.values().forEach({
+    it.afterEvaluate({
+        it.getTasksByName('bootJar', false).forEach({
+            it.archiveBaseName = "${it.project.name}"
+            it.archiveVersion = ''
+        })
+    })
+})

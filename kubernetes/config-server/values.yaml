@@ -1,0 +1,23 @@
+replicaCount: 1
+port:
+  original: 8080
+  forward: 80
+
+image:
+  name: music-transfer-config
+  version: latest
+
+ingress:
+  path: /config-server/(.*)
+  rewrite: /$1
+  name: ingress-nginx
+
+metadata:
+  deployment:
+    name: config-server-dep
+  ingress:
+    name: music-transfer-config
+
+labels:
+  app: config-server
+  env: dev

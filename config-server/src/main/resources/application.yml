@@ -1,0 +1,23 @@
+spring:
+  application:
+    # значение по умолчанию, чтобы не нужно было настраивать в клиентах (для поиска сервера конфигов через Eureka)
+    name: configserver
+  profiles:
+    active:
+      - "native"
+      # native для активации nativeEnvironmentRepository
+  cloud:
+    config:
+      server:
+        native:
+          search-locations:
+            # значения для каждого приложения и профиля
+            - "./config/{application}/{profile}/"
+            # общие значения
+            - "./config/"
+            # файл конфигов должен называться либо application.* , либо {application}.*
+            # (например если {application} - testapp, то testapp.yml либо application.yml
+          version: "1.0"
+#logging:
+#  level:
+#    org.springframework.web.servlet.DispatcherServlet: DEBUG
