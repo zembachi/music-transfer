@@ -1,0 +1,9 @@
+spring:
+  config:
+    import: configserver:http://config-server:8080
+  cloud:
+    config:
+      label: master
+      #необязательно указывать name, по-умолчанию будет использоваться spring.application.name
+      # НО!!! это значение имеет более высокий приоритет
+      name: external-service-manager

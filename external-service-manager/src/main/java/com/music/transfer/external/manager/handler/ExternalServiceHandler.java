@@ -7,7 +7,7 @@ import com.music.transfer.dto.PlaylistDto;
 import com.music.transfer.dto.SongDto;
 import org.springframework.lang.NonNull;
 
-public interface ExternalServiceHandler {
+public interface ExternalServiceHandler extends ExternalServiceAuthorizer {
 
     ExternalServiceType getType();
 

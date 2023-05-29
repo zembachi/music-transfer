@@ -1,0 +1,10 @@
+external:
+  service:
+    spotify:
+      url: https://accounts.spotify.com
+      redirect-url: http://localhost:8080/external-auth
+      scope: user-private user-email
+      response-type: code
+      client-id: 5994e4b6d192496db93865521495a3ee
+    vk-music:
+      url: vk test

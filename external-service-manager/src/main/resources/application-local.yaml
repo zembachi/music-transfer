@@ -1,0 +1,41 @@
+external:
+  service:
+    spotify:
+      url: accounts.spotify.com
+      feign-url: https://${external.service.spotify.url}
+      redirect-url: http://localhost:8085/spotify/confirm
+      scope: user-read-private user-read-email
+      response-type: code
+      client-id: 5994e4b6d192496db93865521495a3ee
+    vk-music:
+      url: vk test
+server:
+  port: 8085
+spring:
+  datasource:
+    # говорим спрингу, чтобы настроил нам датасорс для встроенной бд h2
+    embedded-database-connection: h2
+    url: jdbc:h2:mem:test_mem;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=CREATE SCHEMA IF NOT EXISTS TEST\;SET SCHEMA TEST\;create user if not exists LIQUIBASE_USER password 'password' admin
+  # включаем доступ к консоли h2 ( localhost:{server.port}/h2-console )
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  liquibase:
+    default-schema: TEST
+    password: password
+    user: LIQUIBASE_USER
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+logging:
+  level:
+    com.music.transfer.external.manager.feign.SpotifyFeignClient: DEBUG
+feign:
+  client:
+    config:
+      spotify:
+        loggerLevel: FULL
+#feign.client.config.default.loggerLevel: FULL
+
+

@@ -16,9 +16,17 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.passay:passay:1.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'io.github.openfeign:feign-jackson'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
     implementation project(":common")
+
+    runtimeOnly 'com.h2database:h2'
 }
 
 dependencyManagement {

@@ -1,9 +1,11 @@
 package com.music.transfer.external.manager.handler;
 
+import javax.validation.constraints.NotNull;
+
 public interface ExternalServiceAuthorizer {
 
-    void prepare();
+    String prepare(@NotNull Long userId);
 
-    void confirm();
+    String confirm(@NotNull String code, @NotNull String state);
 
 }

@@ -8,6 +8,6 @@ pluginManagement {
 
 rootProject.name = 'music-transfer'
 include 'config-server'
-//include 'external-service-manager'
-//include 'common'
+include 'external-service-manager'
+include 'common'
 

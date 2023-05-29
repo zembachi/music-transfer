@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.labels.app }}
+  labels:
+    app: {{ .Values.labels.app }}
+data:
+  SPRING_ACTIVE_PROFILES: {{ .Values.configmap.profile }}
