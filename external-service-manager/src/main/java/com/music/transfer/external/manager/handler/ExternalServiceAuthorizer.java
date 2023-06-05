@@ -8,4 +8,6 @@ public interface ExternalServiceAuthorizer {
 
     String confirm(@NotNull String code, @NotNull String state);
 
+    String refreshToken(@NotNull Long userId);
+
 }

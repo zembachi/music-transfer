@@ -1,12 +1,22 @@
 external:
   service:
     spotify:
+      # урл для создания редикерта на спотифай. необходимо указывать без https
       url: accounts.spotify.com
-      feign-url: https://${external.service.spotify.url}
+      # урл для авторизации в спотифае
+      feign-auth-url: https://${external.service.spotify.url}
+      # урл для вызова всех апи методов спотифая
+      feign-api-url: https://api.spotify.com
+      # редикерт, который возвращается спотифаем при согласии пользователя. должен совпадать с тем, что указано в профиле приложения в спотифае
       redirect-url: http://localhost:8085/spotify/confirm
+      # требуемые привилегии для получения информации о пользователе в спотифае. посмотреть тут https://developer.spotify.com/documentation/web-api/concepts/scopes
       scope: user-read-private user-read-email
+      # тип ответа от спотифая при получении access token
       response-type: code
+      # ид приложения в спотифае
       client-id: 5994e4b6d192496db93865521495a3ee
+      # за сколько минут до окончания жизни токена обновить его. например если стоит 5 мин, то при жизни токена в 60 минут приложение обновит его за 55 минут
+      token-refresh-offset: 300000
     vk-music:
       url: vk test
 server:
@@ -30,12 +40,11 @@ spring:
 
 logging:
   level:
-    com.music.transfer.external.manager.feign.SpotifyFeignClient: DEBUG
+    com.music.transfer.external.manager.feign.SpotifyAuthFeignClient: DEBUG
 feign:
   client:
     config:
-      spotify:
+      spotify-auth:
         loggerLevel: FULL
-#feign.client.config.default.loggerLevel: FULL
 
 

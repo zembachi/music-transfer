@@ -3,7 +3,7 @@ package com.music.transfer.dto;
 import lombok.Data;
 
 @Data
-public class SongDto {
+public class TrackDto {
 
     private String name;
 

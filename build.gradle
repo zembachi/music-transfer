@@ -1,3 +1,21 @@
+plugins {
+    id "io.spring.dependency-management"
+}
+
+subprojects {
+    apply plugin:'io.spring.dependency-management'
+    dependencyManagement {
+        dependencies {
+            dependencySet(group: 'org.mapstruct', version: "${getProperty('mapstruct.version')}") {
+                entry 'mapstruct'
+                entry 'mapstruct-processor'
+            }
+            dependency group: 'org.projectlombok', name: 'lombok', version: "${getProperty('lombok.version')}"
+            dependency group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: "${getProperty('lombok.mapstruct.binding.version')}"
+        }
+    }
+}
+
 // устанавливаем для всех дочерних проектов название jar - '${project.name}.jar'
 childProjects.values().forEach({
     it.afterEvaluate({

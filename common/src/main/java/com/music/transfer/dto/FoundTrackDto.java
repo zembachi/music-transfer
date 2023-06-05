@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class FoundSongDto extends SongDto {
+public class FoundTrackDto extends TrackDto {
 
     private String uid;
 

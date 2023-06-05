@@ -9,5 +9,5 @@ public class PlaylistDto {
 
     private String name;
 
-    private List<SongDto> songs;
+    private List<TrackDto> tracks;
 }

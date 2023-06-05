@@ -13,13 +13,42 @@
             <column name="user_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="token" type="varchar(50)">
+            <column name="access_token" type="varchar(50)">
                 <constraints nullable="true"/>
             </column>
             <column name="state" type="varchar(50)">
                 <constraints nullable="true"/>
             </column>
             <column name="verifier" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="refresh_token" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="lifetime" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_update" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="zembachi">
+        <createTable tableName="spotify_user">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="spotify_id" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="display_name" type="varchar(50)">
                 <constraints nullable="true"/>
             </column>
         </createTable>

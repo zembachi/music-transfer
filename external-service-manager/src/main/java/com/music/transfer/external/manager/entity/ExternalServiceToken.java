@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -25,10 +27,16 @@ public class ExternalServiceToken {
 
     private Long userId;
 
-    private String token;
+    private String accessToken;
 
     private String state;
 
     private String verifier;
+
+    private String refreshToken;
+
+    private Integer lifetime;
+
+    private LocalDateTime lastUpdate;
 
 }

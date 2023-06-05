@@ -2,16 +2,20 @@ package com.music.transfer.external.manager.handler.impl;
 
 import com.music.transfer.dto.ExternalServiceTokenDto;
 import com.music.transfer.dto.ExternalServiceType;
-import com.music.transfer.dto.FoundSongDto;
+import com.music.transfer.dto.FoundTrackDto;
 import com.music.transfer.dto.PlaylistDto;
+import com.music.transfer.external.manager.dto.RequestRefreshSpotifyTokenDto;
 import com.music.transfer.external.manager.dto.RequestSpotifyTokenDto;
-import com.music.transfer.dto.SongDto;
+import com.music.transfer.dto.TrackDto;
 import com.music.transfer.external.manager.config.properties.ExternalServiceProperties;
 import com.music.transfer.external.manager.entity.ExternalServiceToken;
-import com.music.transfer.external.manager.feign.SpotifyFeignClient;
+import com.music.transfer.external.manager.feign.SpotifyApiFeignClient;
+import com.music.transfer.external.manager.feign.SpotifyAuthFeignClient;
 import com.music.transfer.external.manager.handler.ExternalServiceAuthorizer;
 import com.music.transfer.external.manager.handler.ExternalServiceHandler;
+import com.music.transfer.external.manager.mapper.SpotifyUserMapper;
 import com.music.transfer.external.manager.repository.ExternalServiceTokenRepository;
+import com.music.transfer.external.manager.repository.SpotifyUserRepository;
 import com.music.transfer.external.manager.util.CodeChallengeService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -19,6 +23,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Repository
 @RequiredArgsConstructor
@@ -28,18 +34,19 @@ public class SpotifyServiceHandlerImpl implements ExternalServiceHandler, Extern
 
     private final ExternalServiceTokenRepository externalServiceTokenRepository;
 
-    private final SpotifyFeignClient spotifyFeignClient;
+    private final SpotifyUserRepository spotifyUserRepository;
+
+    private final SpotifyAuthFeignClient spotifyAuthFeignClient;
+
+    private final SpotifyApiFeignClient spotifyApiFeignClient;
 
     private final CodeChallengeService codeChallengeService;
+
+    private final SpotifyUserMapper spotifyUserMapper;
 
     @Override
     public ExternalServiceType getType() {
         return ExternalServiceType.SPOTIFY;
-    }
-
-    @Override
-    public ExternalServiceTokenDto loginToExternalService(String username, String password, ExternalServiceType type) {
-        return null;
     }
 
     @Override
@@ -53,12 +60,12 @@ public class SpotifyServiceHandlerImpl implements ExternalServiceHandler, Extern
     }
 
     @Override
-    public FoundSongDto findSong(SongDto songDto) {
+    public FoundTrackDto findSong(TrackDto trackDto) {
         return null;
     }
 
     @Override
-    public void addSongToPlaylist(ExternalServiceTokenDto token, String playlistName, SongDto song) {
+    public void addSongToPlaylist(ExternalServiceTokenDto token, String playlistName, TrackDto song) {
 
     }
 
@@ -104,10 +111,40 @@ public class SpotifyServiceHandlerImpl implements ExternalServiceHandler, Extern
                 .redirectUri(spotifyProperties.getRedirectUrl())
                 .codeVerifier(token.getVerifier())
                 .build();
-        var response = spotifyFeignClient.getToken(request);
-        token.setToken(response.getAccessToken());
+        var response = spotifyAuthFeignClient.getToken(request);
+        token.setAccessToken(response.getAccessToken());
+        token.setLifetime(response.getExpiresIn());
+        token.setLastUpdate(LocalDateTime.now());
+        token.setRefreshToken(response.getRefreshToken());
         externalServiceTokenRepository.save(token);
-        return token.getToken();
+        var profileResponse = spotifyApiFeignClient.getProfile(token.getAccessToken());
+        var profile = spotifyUserMapper.dtoToEntity(profileResponse);
+        spotifyUserRepository.save(profile);
+        return token.getAccessToken();
+    }
+
+    @Override
+    public String refreshToken(Long userId) {
+        var token = externalServiceTokenRepository.findByUserId(userId);
+        final var spotifyProperties = externalServiceProperties.getSpotify();
+        if (token.getLastUpdate()
+                .plus(token.getLifetime(), ChronoUnit.SECONDS)
+                .minus(spotifyProperties.getTokenRefreshOffset(), ChronoUnit.MILLIS)
+                .isBefore(LocalDateTime.now())) {
+            return token.getAccessToken();
+        }
+        var request = RequestRefreshSpotifyTokenDto.builder()
+                .grantType("refresh_token")
+                .refreshToken(token.getRefreshToken())
+                .clientId(spotifyProperties.getClientId())
+                .build();
+        var response = spotifyAuthFeignClient.refreshToken(request);
+        token.setAccessToken(response.getAccessToken());
+        token.setLifetime(response.getExpiresIn());
+        token.setLastUpdate(LocalDateTime.now());
+        token.setRefreshToken(response.getRefreshToken());
+        externalServiceTokenRepository.save(token);
+        return token.getAccessToken();
     }
 
 }

@@ -2,9 +2,9 @@ package com.music.transfer.external.manager.handler.impl;
 
 import com.music.transfer.dto.ExternalServiceTokenDto;
 import com.music.transfer.dto.ExternalServiceType;
-import com.music.transfer.dto.FoundSongDto;
+import com.music.transfer.dto.FoundTrackDto;
 import com.music.transfer.dto.PlaylistDto;
-import com.music.transfer.dto.SongDto;
+import com.music.transfer.dto.TrackDto;
 import com.music.transfer.dto.TransferPlaylistDto;
 import com.music.transfer.external.manager.handler.ExternalServiceHandler;
 import com.music.transfer.external.manager.handler.ExternalServiceManager;
@@ -31,9 +31,9 @@ public class ExternalServiceManagerImpl implements ExternalServiceManager {
         ExternalServiceHandler toService = handlerMap.get(toToken.getType());
         PlaylistDto fromPlaylist = fromService.getPlaylist(fromToken, transferPlaylistDto.getFromPlaylistName());
         PlaylistDto toPlaylist = toService.getPlaylist(toToken, transferPlaylistDto.getToPlaylistName());
-        for (SongDto song : fromPlaylist.getSongs()) {
+        for (TrackDto song : fromPlaylist.getTracks()) {
             //TODO: проверить есть ли уже песня в новом плейлисте
-            FoundSongDto foundSong = toService.findSong(song);
+            FoundTrackDto foundSong = toService.findSong(song);
             toService.addSongToPlaylist(toToken, toPlaylist.getName(), foundSong);
             //TODO: послать запрос на сохранение в истории
         }

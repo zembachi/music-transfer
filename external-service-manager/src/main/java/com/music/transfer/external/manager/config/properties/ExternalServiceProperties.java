@@ -39,6 +39,9 @@ public class ExternalServiceProperties {
         @NotBlank
         private String clientId;
 
+        @NotBlank
+        private Long tokenRefreshOffset;
+
     }
 
     @Data

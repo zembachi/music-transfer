@@ -9,4 +9,6 @@ public interface ExternalServiceTokenRepository extends CrudRepository<ExternalS
 
     ExternalServiceToken findByState(@NotNull String state);
 
+    ExternalServiceToken findByUserId(@NotNull Long userId);
+
 }
