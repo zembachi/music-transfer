@@ -10,6 +10,11 @@ do
 done
 docker build -t music-transfer-config ./config-server;
 
+
+
 cd ./kubernetes;
-helm install config-server config-server;
-helm install postgres postgres;
+#helm install config-server config-server;
+#helm install postgres postgres;
+
+#helm install postgresql bitnami/postgresql --values keycloak/postgres-values.yaml --namespace security;
+#helm install keycloakx codecentric/keycloakx --values keycloak/values.yaml --namespace security;
