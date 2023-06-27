@@ -1,0 +1,27 @@
+server:
+  port: 8086
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: music-transfer-app
+            authorization-grant-type: authorization_code
+            scope: openid
+        provider:
+          keycloak:
+            issuer-uri: http://192.168.59.100/keycloak/auth/realms/SpringBootKeycloak
+            user-name-attribute: preferred_username
+      resourceserver:
+        jwt:
+          issuer-uri: http://192.168.59.100/keycloak/auth/realms/SpringBootKeycloak
+
+logging:
+  level:
+    com.music.transfer.external.manager.feign.SpotifyAuthFeignClient: DEBUG
+feign:
+  client:
+    config:
+      spotify-auth:
+        loggerLevel: FULL
