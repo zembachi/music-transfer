@@ -1,13 +1,21 @@
 package com.music.transfer.external.manager.handler;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.NonNull;
 
 public interface ExternalServiceAuthorizer {
 
-    String prepare(@NotNull Long userId);
+    @NotNull
+    String prepare(@NotNull String userId);
 
-    String confirm(@NotNull String code, @NotNull String state);
+    void confirm(@NonNull String code, @NonNull String state);
 
-    String refreshToken(@NotNull Long userId);
+    @NotNull
+    String refreshToken(@NonNull String userId);
+
+    boolean isAuthorized(@NonNull String userId);
+
+    @NonNull
+    String urlToRedirect();
 
 }

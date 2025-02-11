@@ -1,6 +1,11 @@
 server:
   port: 8086
 spring:
+  rabbitmq:
+    addresses: amqp://test:test@127.0.0.1:5672
+#    amqp://admin:secret@localhost
+#    username: test
+#    password: test
   security:
     oauth2:
       client:
@@ -17,11 +22,16 @@ spring:
         jwt:
           issuer-uri: http://192.168.59.100/keycloak/auth/realms/SpringBootKeycloak
 
+app.resource.server:
+  url: localhost:8085/api
+
 logging:
   level:
-    com.music.transfer.external.manager.feign.SpotifyAuthFeignClient: DEBUG
+    com.music.transfer.thymeleaf.feign.AppResourceServerFeignClient: DEBUG
 feign:
   client:
     config:
-      spotify-auth:
+      resource-server:
+        requestInterceptors:
+          - com.music.transfer.thymeleaf.feign.interceptor.FeignRequestAuthHeaderInterceptor
         loggerLevel: FULL

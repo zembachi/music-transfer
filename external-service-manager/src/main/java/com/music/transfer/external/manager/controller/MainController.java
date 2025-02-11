@@ -1,30 +1,30 @@
 package com.music.transfer.external.manager.controller;
 
-import com.music.transfer.external.manager.handler.ExternalServiceHandler;
+import com.music.transfer.dto.ResponseGetAuthenticatedServiceInfoDto;
+import com.music.transfer.external.manager.handler.impl.ExternalServiceManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
-@RequestMapping("main")
+@RequestMapping("api/main")
 @RequiredArgsConstructor
 public class MainController {
 
-    private final ExternalServiceHandler externalServiceHandler;
+    private final ExternalServiceManager externalServiceManager;
 
-    @GetMapping("authenticated")
+    @GetMapping(value = "auth/info")
+    @PreAuthorize("hasAuthority('custom')")
     @Validated
-    public ResponseEntity<String> isUserAuthenticated(@PathVariable @Positive Long userId) {
-        String urlToRedirect = externalServiceHandler.prepare(userId);
-        return ResponseEntity.ok()
-                .body(urlToRedirect);
+    public ResponseEntity<List<ResponseGetAuthenticatedServiceInfoDto>> isUserAuthenticated() {
+        List<ResponseGetAuthenticatedServiceInfoDto> responseBody = externalServiceManager.getAuthInfo();
+        return ResponseEntity.ok().body(responseBody);
     }
 
 }

@@ -1,0 +1,13 @@
+ingress:
+  path: /rabbitmq/(.*)
+  rewrite: /$1
+  name: rabbitmq-ingress-nginx
+
+metadata:
+  login: test
+  password: test
+
+labels:
+  app: rabbitmq
+  ingress: rabbitmq-ingress
+

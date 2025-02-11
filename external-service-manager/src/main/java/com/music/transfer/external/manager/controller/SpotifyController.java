@@ -1,38 +1,43 @@
 package com.music.transfer.external.manager.controller;
 
-import com.music.transfer.dto.ExternalServiceType;
-import com.music.transfer.external.manager.handler.ExternalServiceHandler;
+import com.music.transfer.external.manager.dto.PrepareSpotifyAuthDto;
+import com.music.transfer.external.manager.handler.SpotifyService;
+import com.music.transfer.external.manager.request.context.AppRequestContextHolder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("spotify")
 @RequiredArgsConstructor
 public class SpotifyController {
 
-    private final ExternalServiceHandler externalServiceHandler;
+    private final SpotifyService spotifyService;
 
-    @GetMapping("prepare/user/{userId}")
+    private final AppRequestContextHolder appRequestContextHolder;
+
+    @GetMapping("prepare")
     @Validated
-    public ResponseEntity<String> prepareLogin(@PathVariable @Positive Long userId) {
-        String urlToRedirect = externalServiceHandler.prepare(userId);
-        return ResponseEntity.ok()
-                .body(urlToRedirect);
+    public ResponseEntity<String> prepareLogin() {
+        final var userId = appRequestContextHolder.get().appUser().getId();
+        final var urlToRedirect = spotifyService.prepare(userId);
+        return ResponseEntity.ok().body(urlToRedirect);
     }
 
     @GetMapping("confirm")
     @Validated
-    public ResponseEntity<String> prepareLogin(@NotBlank String code, @NotBlank String state) {
-        String accessToken = externalServiceHandler.confirm(code, state);
+    public ResponseEntity<String> prepareLogin(@NotBlank String code,
+                                               @NotBlank String state,
+                                               @NotNull String redirectUrl) {
+//        String accessToken = spotifyService.confirm(code, state, redirectUrl);
         return ResponseEntity.ok()
-                .body(accessToken);
+                .body(null);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.music.transfer.external.manager.feign;
 
-import com.music.transfer.external.manager.config.properties.SpotifyFeignConfig;
+import com.music.transfer.external.manager.config.SpotifyFeignConfig;
 import com.music.transfer.external.manager.dto.RequestRefreshSpotifyTokenDto;
 import com.music.transfer.external.manager.dto.RequestSpotifyTokenDto;
 import com.music.transfer.external.manager.dto.ResponseSpotifyTokenDto;

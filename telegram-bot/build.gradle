@@ -1,0 +1,53 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'java'
+}
+
+group = 'com.music.transfer'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-jersey'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation 'org.telegram:telegrambots-springboot-longpolling-starter'
+    implementation 'org.telegram:telegrambots-client'
+    implementation 'org.telegram:telegrambots-abilities'
+    implementation 'com.github.scribejava:scribejava-core'
+    implementation 'com.github.scribejava:scribejava-apis'
+    implementation 'com.auth0:java-jwt'
+    implementation 'net.jodah:expiringmap'
+
+    implementation 'org.projectlombok:lombok'
+
+    implementation 'io.github.openfeign:feign-jackson'
+    implementation 'org.mapstruct:mapstruct'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.mapstruct:mapstruct-processor'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding'
+    compileOnly 'org.projectlombok:lombok'
+    implementation project(":common")
+
+    runtimeOnly 'com.h2database:h2'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

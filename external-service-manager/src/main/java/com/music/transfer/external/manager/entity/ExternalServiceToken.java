@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import java.time.LocalDateTime;
 
 @Data
@@ -25,7 +25,7 @@ public class ExternalServiceToken {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_external_service_token")
     private Long id;
 
-    private Long userId;
+    private String userId;
 
     private String accessToken;
 

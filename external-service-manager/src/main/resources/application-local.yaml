@@ -1,14 +1,14 @@
 external:
   service:
     spotify:
+      #имя для отображения на фронте
+      name: Spotify
       # урл для создания редикерта на спотифай. необходимо указывать без https
       url: accounts.spotify.com
       # урл для авторизации в спотифае
       feign-auth-url: https://${external.service.spotify.url}
       # урл для вызова всех апи методов спотифая
-      feign-api-url: https://api.spotify.com
-      # редикерт, который возвращается спотифаем при согласии пользователя. должен совпадать с тем, что указано в профиле приложения в спотифае
-      redirect-url: http://localhost:8085/spotify/confirm
+      feign-api-url: https://api.spotify.com/v1
       # требуемые привилегии для получения информации о пользователе в спотифае. посмотреть тут https://developer.spotify.com/documentation/web-api/concepts/scopes
       scope: user-read-private user-read-email
       # тип ответа от спотифая при получении access token
@@ -22,6 +22,12 @@ external:
 server:
   port: 8085
 spring:
+  rabbitmq:
+    addresses: amqp://test:test@127.0.0.1:5672
+  security:
+    oauth2.resourceserver:
+      jwt:
+        jwk-set-uri: http://192.168.59.100/keycloak/auth/realms/SpringBootKeycloak/protocol/openid-connect/certs
   datasource:
     # говорим спрингу, чтобы настроил нам датасорс для встроенной бд h2
     embedded-database-connection: h2
@@ -40,6 +46,8 @@ spring:
 
 logging:
   level:
+    org.springframework: DEBUG
+#    root: DEBUG
     com.music.transfer.external.manager.feign.SpotifyAuthFeignClient: DEBUG
 feign:
   client:

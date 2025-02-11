@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface SpotifyUserMapper {
 
     @Mapping(source = "id", target = "spotifyId")
+    @Mapping(target = "id", ignore = true)
     SpotifyUser dtoToEntity(ResponseSpotifyGetProfileDto dto);
 
 }

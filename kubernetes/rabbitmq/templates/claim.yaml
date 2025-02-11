@@ -1,0 +1,17 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: {{ .Values.labels.app }}
+spec:
+  replicas: 1
+  rabbitmq:
+    additionalConfig: |
+      default_user={{ .Values.metadata.login }}
+      default_pass={{ .Values.metadata.password }}
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi

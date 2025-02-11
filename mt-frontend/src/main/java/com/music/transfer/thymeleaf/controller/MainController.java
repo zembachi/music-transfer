@@ -18,4 +18,10 @@ public class MainController {
         return "main";
     }
 
+
+    @GetMapping("login")
+    public String login(Principal principal, Model model) {
+        return "login";
+    }
+
 }

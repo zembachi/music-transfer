@@ -4,8 +4,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @ConfigurationProperties("external.service")
 @Data
@@ -25,10 +26,10 @@ public class ExternalServiceProperties {
     public static class Spotify {
 
         @NotBlank
-        private String url;
+        private String name;
 
         @NotBlank
-        private String redirectUrl;
+        private String url;
 
         @NotBlank
         private String scope;
@@ -39,7 +40,7 @@ public class ExternalServiceProperties {
         @NotBlank
         private String clientId;
 
-        @NotBlank
+        @Positive
         private Long tokenRefreshOffset;
 
     }

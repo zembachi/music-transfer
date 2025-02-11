@@ -12,6 +12,17 @@ subprojects {
             }
             dependency group: 'org.projectlombok', name: 'lombok', version: "${getProperty('lombok.version')}"
             dependency group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: "${getProperty('lombok.mapstruct.binding.version')}"
+            dependencySet(group: 'com.github.scribejava', version: "${getProperty('scribejava.version')}") {
+                entry 'scribejava-apis'
+                entry 'scribejava-core'
+            }
+            dependencySet(group: 'org.telegram', version: "${getProperty('telegrambot.starter.version')}") {
+                entry 'telegrambots-springboot-longpolling-starter'
+                entry 'telegrambots-client'
+                entry 'telegrambots-abilities'
+            }
+            dependency group: 'com.auth0', name: 'java-jwt', version: "${getProperty('jwt.version')}"
+            dependency group: 'net.jodah', name: 'expiringmap', version: "${getProperty('expiringmap.version')}"
         }
     }
 }
